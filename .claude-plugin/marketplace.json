@@ -1,0 +1,31 @@
+{
+  "name": "ocaml-lsp",
+  "description": "OCaml tooling for Claude Code: language-server integration for ocaml-lsp-server.",
+  "owner": {
+    "name": "Émile Brunelle"
+  },
+  "plugins": [
+    {
+      "name": "ocaml-lsp",
+      "description": "OCaml language server (ocaml-lsp-server) for code intelligence",
+      "version": "1.0.0",
+      "author": {
+        "name": "Émile Brunelle"
+      },
+      "category": "development",
+      "source": "./plugins/ocaml-lsp",
+      "lspServers": {
+        "ocamllsp": {
+          "command": "ocamllsp",
+          "args": [
+            "--stdio"
+          ],
+          "extensionToLanguage": {
+            ".ml": "ocaml",
+            ".mli": "ocaml.interface"
+          }
+        }
+      }
+    }
+  ]
+}

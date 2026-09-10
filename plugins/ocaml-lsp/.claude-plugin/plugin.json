@@ -1,0 +1,18 @@
+{
+  "name": "ocaml-lsp",
+  "version": "1.0.0",
+  "description": "OCaml language server (ocaml-lsp-server) for code intelligence",
+  "author": {
+    "name": "Émile Brunelle"
+  },
+  "lspServers": {
+    "ocamllsp": {
+      "command": "ocamllsp",
+      "args": ["--stdio"],
+      "extensionToLanguage": {
+        ".ml": "ocaml",
+        ".mli": "ocaml.interface"
+      }
+    }
+  }
+}
