@@ -76,19 +76,23 @@ Every row was checked by driving the server over stdio: `initialize`, then
 `didOpen` + `documentSymbol` + `hover` on a `.ml` and a `.mli` in a built Dune
 project. A row is OK only if both files return symbols *and* a type.
 
-| OCaml | ocaml-lsp-server | Capabilities | `.ml` | `.mli` | Result |
+| OCaml | ocaml-lsp-server | Capabilities | `.ml` | `.mli` | Where |
 |---|---|---|---|---|---|
-| 4.14.4 | 1.21.0-4.14 | 22 | OK | OK | OK |
-| 5.3.0 | 1.23.1 | 22 | OK | OK | OK |
-| 5.4.1 | 1.26.0 | 23 | OK | OK | OK |
-| 5.5.1 | 1.27.0 | 23 | OK | OK | OK |
+| 4.14.4 | 1.21.0-4.14 | 22 | OK | OK | Fedora host + Debian container |
+| 5.1.1 | 1.18.0 | 22 | OK | OK | Debian container |
+| 5.2.1 | 1.21.0 | 22 | OK | OK | Debian container |
+| 5.3.0 | 1.23.1 | 22 | OK | OK | Fedora host + Debian container |
+| 5.4.1 | 1.26.0 | 23 | OK | OK | Fedora host + Debian container |
+| 5.5.1 | 1.27.0 | 23 | OK | OK | Fedora host |
 
 `hoverProvider`, `definitionProvider` and `publishDiagnostics` are present in
 every row. The plugin pins no version — it runs whatever `ocamllsp` the switch
 provides — so the oldest row is what matters: `ocaml.interface` is already
-accepted by 1.21.0, the version opam resolves for a 4.14 switch.
+accepted by 1.18.0, nine releases before the version this was written against.
 
-Host: Fedora 44, dune 3.24.2, opam 2.5.2. Re-run the matrix yourself with
+Host rows: Fedora 44, dune 3.24.2, opam 2.5.2. Container rows: official
+`ocaml/opam:debian-ocaml-*` images, whose pinned opam snapshot is what selects
+each `ocaml-lsp-server` version. Re-run the matrix yourself with
 [`test/matrix.sh`](../../test/matrix.sh) — it uses the official `ocaml/opam`
 container images and leaves your switches alone.
 
