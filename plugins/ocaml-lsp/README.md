@@ -47,6 +47,14 @@ nix-shell -p ocamlPackages.ocaml-lsp
 Nixpkgs pins a different `ocaml-lsp` version per compiler, the same way opam
 resolves a different one per switch.
 
+### Windows
+
+Untested — treat this as an open question, not a claim. opam has had native
+Windows support since 2.2, so `ocamllsp.exe` can be on `PATH`; what has not
+been verified here is whether the bare `ocamllsp` command in the manifest
+resolves to it. WSL2 is the route that certainly works, since it is Linux.
+Reports either way are welcome.
+
 ### Where it is *not* packaged
 
 Checked 2026-09-10, so that nobody burns an afternoon on it:
@@ -90,7 +98,7 @@ every row. The plugin pins no version — it runs whatever `ocamllsp` the switch
 provides — so the oldest row is what matters: `ocaml.interface` is already
 accepted by 1.18.0, nine releases before the version this was written against.
 
-Host rows: Fedora 44, dune 3.24.2, opam 2.5.2. Container rows: official
+Every row is Linux. Host rows: Fedora 44, dune 3.24.2, opam 2.5.2. Container rows: official
 `ocaml/opam:debian-ocaml-*` images, whose pinned opam snapshot is what selects
 each `ocaml-lsp-server` version. Re-run the matrix yourself with
 [`test/matrix.sh`](../../test/matrix.sh) — it uses the official `ocaml/opam`
