@@ -5,9 +5,9 @@ An [OCaml language server](https://github.com/ocaml/ocaml-lsp) plugin for
 signatures and compiler diagnostics from `ocamllsp` instead of inferring them
 from the source text.
 
-There is no OCaml entry among Claude Code's official LSP plugins (Rust, Go,
-Java, Swift, Python, Ruby, C/C++, C#, Kotlin, Lua, PHP, TypeScript). This is
-that entry, in the same shape.
+Claude Code has LSP plugins for a dozen languages. OCaml was not one of them
+when this was written, so this fills the gap, built to the same shape as those
+plugins. It is a third-party plugin, maintained here.
 
 ## Install
 
