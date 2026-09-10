@@ -1,5 +1,5 @@
-"""Sonde LSP : vérifie ce que le plugin ocaml-lsp déclare, rien de plus.
-Usage: lsp_probe.py <racine du projet dune> <label>"""
+"""LSP probe: checks exactly what the ocaml-lsp plugin declares, nothing more.
+Usage: lsp_probe.py <dune project root> <label>"""
 import json, subprocess, sys, os, threading, time
 
 ROOT, LABEL = sys.argv[1], sys.argv[2]
@@ -25,7 +25,7 @@ def reader(p, out):
             buf += c
         out.append(json.loads(buf))
 
-# exactement les extensions que le plugin déclare
+# exactly the extensions the plugin declares
 CASES = [("probe.ml", "ocaml"), ("probe.mli", "ocaml.interface")]
 
 p = subprocess.Popen(["ocamllsp", "--stdio"], stdin=subprocess.PIPE,
@@ -46,7 +46,7 @@ for i, (rel, lang) in enumerate(CASES):
         "textDocument":{"uri":uri,"languageId":lang,"version":1,"text":text}}}))
     p.stdin.write(frame({"jsonrpc":"2.0","id":100+i,"method":"textDocument/documentSymbol",
                          "params":{"textDocument":{"uri":uri}}}))
-    # hover sur `double` (ligne 0, colonne 4 de probe.ml / probe.mli)
+    # hover on `double` (line 0, column 4 of probe.ml / probe.mli)
     p.stdin.write(frame({"jsonrpc":"2.0","id":200+i,"method":"textDocument/hover","params":{
         "textDocument":{"uri":uri},"position":{"line":0,"character":4}}}))
     p.stdin.flush()
@@ -62,18 +62,18 @@ ok = bool(caps)
 for i, (rel, lang) in enumerate(CASES):
     sym, hov = by_id.get(100+i, {}), by_id.get(200+i, {})
     def state(r, kind):
-        if "error" in r: return f"ERREUR({r['error'].get('message')})"
-        if "result" not in r: return "aucune réponse"
+        if "error" in r: return f"ERROR({r['error'].get('message')})"
+        if "result" not in r: return "no response"
         v = r["result"]
         if v is None: return "null"
-        return f"{len(v)} symb." if kind == "sym" else "type reçu"
+        return f"{len(v)} sym." if kind == "sym" else "type returned"
     s, h = state(sym, "sym"), state(hov, "hov")
     rows.append((rel, lang, s, h))
-    if not (s.endswith("symb.") and h == "type reçu"): ok = False
+    if not (s.endswith("sym.") and h == "type returned"): ok = False
 
-print(f"[{LABEL}] initialize: {len(caps)} capacités | hover:{'hoverProvider' in caps} "
+print(f"[{LABEL}] initialize: {len(caps)} capabilities | hover:{'hoverProvider' in caps} "
       f"definition:{'definitionProvider' in caps} publishDiagnostics:{len(diags)>0}")
 for rel, lang, s, h in rows:
     print(f"[{LABEL}]   {rel:10} ({lang:16}) documentSymbol: {s:20} hover: {h}")
-print(f"[{LABEL}] VERDICT: {'OK' if ok else 'ÉCHEC'}")
+print(f"[{LABEL}] VERDICT: {'OK' if ok else 'FAILED'}")
 sys.exit(0 if ok else 1)

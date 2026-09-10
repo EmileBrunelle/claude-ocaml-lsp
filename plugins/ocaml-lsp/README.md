@@ -17,23 +17,46 @@ Claude to read.
 
 ## Installation
 
-`ocamllsp` is not bundled with the compiler — install it into the switch you
-are working in, not globally:
+`ocamllsp` is not bundled with the compiler, and it is not in any system
+package manager worth using (see below). opam is the route:
 
 ```bash
 opam install ocaml-lsp-server
 eval $(opam env)                # required: the binary lives in the switch
 ```
 
-### Via package manager
+Install it into the switch you are working in, not once and globally: the
+server has to match the compiler that built the project.
+
+### macOS
+
+Homebrew has no `ocaml-lsp` formula — it packages `ocaml` and `opam` only. So
+Homebrew gets you opam, and opam gets you the server:
 
 ```bash
-# Nix
-nix-shell -p ocamlPackages.ocaml-lsp
-
-# Arch Linux
-sudo pacman -S ocaml-lsp
+brew install opam
+opam init && opam install ocaml-lsp-server
 ```
+
+### Nix
+
+```bash
+nix-shell -p ocamlPackages.ocaml-lsp
+```
+
+Nixpkgs pins a different `ocaml-lsp` version per compiler, the same way opam
+resolves a different one per switch.
+
+### Where it is *not* packaged
+
+Checked 2026-09-10, so that nobody burns an afternoon on it:
+
+| | |
+|---|---|
+| Homebrew | no `ocaml-lsp` or `ocaml-lsp-server` formula |
+| Debian / Ubuntu | no `apt` package (searched trixie) |
+| Fedora | no `dnf` package |
+| Arch | not in the official repos; AUR has only `ocaml-lsp-git`, an unversioned git snapshot with no votes |
 
 ## Requirements
 
